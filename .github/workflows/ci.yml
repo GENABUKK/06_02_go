@@ -23,9 +23,34 @@ jobs:
 
     - name: Test
       run: |
+        echo "=== Starting server ==="
         ./dummy-server.bin &
-        sleep 3
-        curl http://localhost:8080
+        SERVER_PID=$!
+        echo "Server PID: $SERVER_PID"
+        
+        echo "=== Waiting for server to start ==="
+        sleep 5
+        
+        echo "=== Checking server status ==="
+        if ps -p $SERVER_PID > /dev/null; then
+          echo "✅ Server is running"
+        else
+          echo "❌ Server is not running"
+          exit 1
+        fi
+        
+        echo "=== Testing HTTP connection ==="
+        if curl -v http://localhost:8080; then
+          echo "✅ HTTP test passed"
+        else
+          echo "❌ HTTP test failed"
+          exit 1
+        fi
+        
+        echo "=== Killing server ==="
+        kill $SERVER_PID
+        
+        echo "=== All tests passed! ==="
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
