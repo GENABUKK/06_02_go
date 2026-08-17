@@ -19,7 +19,7 @@ jobs:
         go-version: '1.21'
 
     - name: Build
-      run: go build -o dummy-server.bin
+      run: go build -v -o dummy-server.bin ./cmd/...
 
     - name: Test
       run: |
