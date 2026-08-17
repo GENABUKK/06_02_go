@@ -29,18 +29,10 @@ jobs:
         echo "Server PID: $SERVER_PID"
         
         echo "=== Waiting for server to start ==="
-        sleep 5
+        sleep 3
         
-        echo "=== Checking server status ==="
-        if ps -p $SERVER_PID > /dev/null; then
-          echo "✅ Server is running"
-        else
-          echo "❌ Server is not running"
-          exit 1
-        fi
-        
-        echo "=== Testing HTTP connection ==="
-        if curl -v http://localhost:8080; then
+        echo "=== Testing HTTP connection on port 8888 ==="
+        if curl -v http://localhost:8888; then
           echo "✅ HTTP test passed"
         else
           echo "❌ HTTP test failed"
